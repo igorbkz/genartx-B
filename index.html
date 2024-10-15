@@ -11,8 +11,8 @@
             margin: 0 auto;
             padding: 20px;
             text-align: center;
-            background: #121212; /* Fundo cinza bem escuro, quase preto */
-            color: #e0e0e0;
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a); /* Fundo mais escuro */
+            color: #e0e0e0; /* Texto mais neutro */
         }
         h1 {
             color: #ffffff;
@@ -521,26 +521,20 @@
         body.light-mode .instagram-link:hover {
             color: #333;
         }
-
-        /* Remover estilos relacionados ao tema claro/escuro e botão de ajuda */
-        .theme-toggle,
-        .help-button,
-        body.light-mode,
-        .tooltip {
-            display: none;
-        }
     </style>
     <!-- Adicionar link para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1 id="genArtTitle">GenArt</h1>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema"><i class="fas fa-adjust"></i></button> <!-- Botão para alternar entre temas -->
+    <button class="help-button" onclick="showHelp()" title="Ajuda"><i class="fas fa-question-circle"></i></button> <!-- Botão de ajuda -->
+    <h1 id="genArtTitle">GenArt</h1> <!-- Alterado para GenArt -->
     <div class="input-container">
         <input type="text" id="prompt" placeholder="Imagine sua imagem aqui">
         <button id="enhanceToggle" class="enhance-toggle" onclick="toggleEnhancePrompt()" title="Alternar aprimoramento de prompt">
             <i class="fas fa-magic"></i>
         </button>
-        <button id="generateButton" onclick="generateOrEnhanceImage()"><i class="fas fa-paint-brush"></i></button>
+        <button id="generateButton" onclick="generateOrEnhanceImage()"><i class="fas fa-paint-brush"></i></button> <!-- Atualizado para um ícone mais elegante -->
     </div>
     <div id="result-container">
         <div id="result"></div>
@@ -548,7 +542,7 @@
     <div id="history"></div>
     <div class="history-header">
         <h2>Histórico de Imagens</h2>
-        <button class="refresh-button" onclick="confirmClearHistory()" title="Limpar histórico"><i class="fas fa-sync-alt"></i></button>
+        <button class="refresh-button" onclick="confirmClearHistory()" title="Limpar histórico"><i class="fas fa-sync-alt"></i></button> <!-- Atualizado para um ícone mais elegante -->
     </div>
 
     <!-- Modal para exibir imagens em tamanho completo -->
@@ -557,6 +551,17 @@
             <span class="close" onclick="closeModal()">&times;</span>
             <img id="modalImage" src="" alt="Imagem em tamanho completo">
             <p id="modalPrompt"></p>
+        </div>
+    </div>
+
+    <!-- Modal de ajuda -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHelpModal()">&times;</span>
+            <h2>Ajuda</h2>
+            <p>Digite um prompt no campo de entrada e clique no botão <i class="fas fa-paint-brush"></i> para gerar uma imagem.</p>
+            <p>Você pode alternar entre o modo claro e escuro clicando no botão <i class="fas fa-adjust"></i> no canto superior esquerdo.</p>
+            <p>Para ver o histórico de imagens geradas, role para baixo.</p>
         </div>
     </div>
 
@@ -814,6 +819,37 @@
                 enhanceToggle.classList.toggle('active', enhancePrompt);
             }
         });
+
+        // Alternar entre temas claro e escuro
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Carregar o tema salvo
+        window.addEventListener('load', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        });
+
+        // Mostrar modal de ajuda
+        function showHelp() {
+            const helpModal = document.getElementById('helpModal');
+            helpModal.style.display = 'block';
+        }
+
+        // Fechar modal de ajuda
+        function closeHelpModal() {
+            const helpModal = document.getElementById('helpModal');
+            helpModal.style.display = 'none';
+        }
+
+        // Definir prompt a partir de sugestões
+        function setPrompt(prompt) {
+            document.getElementById('prompt').value = prompt;
+        }
     </script>
 
     <!-- Adicione este código logo antes do fechamento da tag </body> -->
